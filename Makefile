@@ -7,7 +7,7 @@ ifeq ($(strip $(DEVKITPPC)),)
 $(error "Please set DEVKITPPC in your environment. export DEVKITPPC=<path to>/devkitPPC")
 endif
 
-include $(DEVKITPPC)/gamecube_rules
+include $(DEVKITPPC)/wii_rules
 
 # Format: YYYYMMDDHHmm + 2 char Game Region
 BUILDID:='"$(shell date +'%Y%m%d%H%M')"'
@@ -29,32 +29,35 @@ OUTPUT_FILENAME := REL
 # DON'T TOUCH UNLESS YOU KNOW WHAT YOU'RE DOING
 LIBTP_REL := externals/libtp_rel
 
-GCIPACK := python3 ../bin/gcipack.py
+NANDPACK := python3 ../bin/nandpack.py
 
 UNAME := $(shell uname)
 
 ifeq ($(UNAME), Linux)
-	ELF2REL := ../bin/elf2rel
+	ELF2REL := wine ../bin/elf2rel.exe
 else
 	ELF2REL := ../bin/elf2rel.exe
 endif
 
 
 ifeq ($(VERSION),)
-all: us jp eu
-us:
-	@$(MAKE) --no-print-directory VERSION=us
+all: us0 us2 jp eu
+us0:
+	@$(MAKE) --no-print-directory VERSION=us0
+us2:
+	@$(MAKE) --no-print-directory VERSION=us2
 jp:
 	@$(MAKE) --no-print-directory VERSION=jp
 eu:
 	@$(MAKE) --no-print-directory VERSION=eu
 
 clean:
-	@$(MAKE) --no-print-directory clean_target VERSION=us
+	@$(MAKE) --no-print-directory clean_target VERSION=us0
+	@$(MAKE) --no-print-directory clean_target VERSION=us2
 	@$(MAKE) --no-print-directory clean_target VERSION=jp
 	@$(MAKE) --no-print-directory clean_target VERSION=eu
 
-.PHONY: all clean us jp eu
+.PHONY: all clean us0 us2 jp eu
 else
 
 #---------------------------------------------------------------------------------
@@ -73,31 +76,37 @@ INCLUDES	:=	include $(LIBTP_REL)/include
 # options for code generation
 #---------------------------------------------------------------------------------
 
-MACHDEP		= -mno-sdata -mgcn -DGEKKO -mcpu=750 -meabi -mhard-float
+MACHDEP		= -mno-sdata -mrvl -DGEKKO -mcpu=750 -meabi -mhard-float
 
-CFLAGS		= -nostdlib -ffreestanding -ffunction-sections -fdata-sections -g -Os -Wall -Werror -Wno-address-of-packed-member $(MACHDEP) $(INCLUDE) -D_PROJECT_NAME='"$(PROJECT_NAME)"' -D_VERSION_MAJOR='$(_VERSION_MAJOR)' -D_VERSION_MINOR='$(_VERSION_MINOR)' -D_VERSION_PATCH='$(_VERSION_PATCH)'  -D_VERSION='"$(_VERSION)"' -D_VARIANT='"$(_VARIANT)"'
+CFLAGS		= -nostdlib -ffreestanding -ffunction-sections -fdata-sections -g -Os -Wall -Werror -Wno-address-of-packed-member $(MACHDEP) $(INCLUDE) -D_PROJECT_NAME='"$(PROJECT_NAME)"' -D_VERSION_MAJOR='$(_VERSION_MAJOR)' -D_VERSION_MINOR='$(_VERSION_MINOR)' -D_VERSION_PATCH='$(_VERSION_PATCH)'  -D_VERSION='"$(_VERSION)"' -D_VARIANT='"$(_VARIANT)"' -DPLATFORM_WII=1
 CXXFLAGS	= -fno-exceptions -fno-rtti -std=gnu++17 $(CFLAGS)
 
 LDFLAGS		= -r -e _prolog -u _prolog -u _epilog -u _unresolved -Wl,--gc-sections -nostdlib -g $(MACHDEP) -Wl,-Map,$(notdir $@).map
 
 # Platform options
-ifeq ($(VERSION),us)
-	CFLAGS += -DTP_US
-	CFLAGS += -D_BUILDID='"$(BUILDID)US"'
-	ASFLAGS += -DTP_US
-	GAMECODE = "GZ2E"
-	PRINTVER = "US"
+ifeq ($(VERSION),us0)
+	CFLAGS += -DTP_US0
+	CFLAGS += -D_BUILDID='"$(BUILDID)US0"'
+	ASFLAGS += -DTP_US0
+	GAMECODE = "RZDE"
+	PRINTVER = "US0"
+else ifeq ($(VERSION),us2)
+	CFLAGS += -DTP_US2
+	CFLAGS += -D_BUILDID='"$(BUILDID)US2"'
+	ASFLAGS += -DTP_US2
+	GAMECODE = "RZDE"
+	PRINTVER = "US2"
 else ifeq ($(VERSION),eu)
 	CFLAGS += -DTP_EU
 	CFLAGS += -D_BUILDID='"$(BUILDID)EU"'
 	ASFLAGS += -DTP_EU
-	GAMECODE = "GZ2P"
+	GAMECODE = "RZDP"
 	PRINTVER = "EU"
 else ifeq ($(VERSION),jp)
 	CFLAGS += -DTP_JP
 	CFLAGS += -D_BUILDID='"$(BUILDID)JP"'
 	ASFLAGS += -DTP_JP
-	GAMECODE = "GZ2J"
+	GAMECODE = "RZDJ"
 	PRINTVER = "JP"
 endif
 
@@ -182,7 +191,7 @@ $(BUILD):
 #---------------------------------------------------------------------------------
 clean_target:
 	@echo clean ... $(VERSION)
-	@rm -fr $(BUILD) $(OUTPUT).elf $(OUTPUT).dol $(OUTPUT).rel $(OUTPUT).gci
+	@rm -fr $(BUILD) $(OUTPUT).elf $(OUTPUT).dol $(OUTPUT).rel $(OUTPUT).bin
 
 #---------------------------------------------------------------------------------
 else
@@ -192,7 +201,7 @@ DEPENDS	:=	$(OFILES:.o=.d)
 #---------------------------------------------------------------------------------
 # main targets
 #---------------------------------------------------------------------------------
-$(OUTPUT).gci: $(OUTPUT).rel $(BANNERFILE) $(ICONFILE)
+$(OUTPUT).bin: $(OUTPUT).rel $(BANNERFILE)
 $(OUTPUT).rel: $(OUTPUT).elf $(MAPFILE)
 $(OUTPUT).elf: $(LDFILES) $(OFILES)
 
@@ -203,9 +212,12 @@ $(OFILES_SOURCES) : $(HFILES)
 	@echo output ... $(notdir $@)
 	@$(ELF2REL) $< -s $(MAPFILE)
 
-%.gci: %.rel
+%.bin: %.rel
+	@[ -d $(BUILD) ] || mkdir -p $(BUILD)
+	@echo formating ... $(notdir $(BUILD))/pcrel.bin
+	@$(NANDPACK) format $< $(BUILD)/pcrel.bin
 	@echo packing ... $(notdir $@)
-	@$(GCIPACK) $< "Custom REL File" "Twilight Princess" "($(PRINTVER)) $(PROJECT_NAME)" $(BANNERFILE) $(ICONFILE) $(GAMECODE)
+	@$(NANDPACK) generate -g $(VERSION) -l 2 -f "$(PROJECT_NAME)" $< $(BANNERFILE) $@
 
 #---------------------------------------------------------------------------------
 # This rule links in binary data with the .jpg extension

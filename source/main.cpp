@@ -8,14 +8,30 @@
  * @copyright Copyright (c) YYYY
  *
  */
-#include <display/console.h>     // Contains a very neat helper class to print to the console
+#include <cstdio>
+#include <cstring>
+// #include <display/console.h>     // Contains a very neat helper class to print to the console
 #include <main.h>
 #include <patch.h>     // Contains code for hooking into a function
 #include <tp/f_ap_game.h>
+// #include <tp/m_do_printf.h>
 
 namespace mod
 {
+    Mod *gMod = nullptr;
+
     void main()
+    {
+        Mod *mod = new Mod();
+        mod->init();
+    }
+
+    Mod::Mod() : c(0)
+    {
+        i = 0;
+    }
+
+    void Mod::init()
     {
         /**
          * Old way of printing to the console
@@ -30,25 +46,23 @@ namespace mod
         // this console can be used in a similar way to cout to make printing a little easier; it also supports \n for new lines
         // (\r is implicit; UNIX-Like) and \r for just resetting the column and has overloaded constructors for all of the
         // primary cinttypes
-        c = libtp::display::Console();
-
         c << "Hello world!\n\n";
 
-        // Technically I prefer to do the function hooks at the very top but since this is a template I'll do it here so we can
-        // have hello world at the top
-
+        gMod = this;
         // Hook the function that runs each frame
-        return_fapGm_Execute = libtp::patch::hookFunction( libtp::tp::f_ap_game::fapGm_Execute, procNewFrame );
-        return;
+        return_fapGm_Execute = libtp::patch::hookFunction(libtp::tp::f_ap_game::fapGm_Execute, []()
+        {
+            return gMod->procNewFrame();
+        });
     }
 
-    void procNewFrame()
+    void Mod::procNewFrame()
     {
         // This runs BEFORE the original (hooked) function (fapGm_Execute)
 
         // we can do whatever stuff we like... counting for example:
         i++;
-        c << "Frames: " << i << "\r";
+        c << " \r" << "Frames: " << i;
 
         // return what our original function would've returned (in this case the return is obsolete since it is a void func)
         // And most importantly, since this is related to the frame output, call the original function at all because it may do

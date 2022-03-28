@@ -1,154 +1,170 @@
 // memory
-80003458:memset
-80003540:memcpy
+8000443c:memset
+80004338:memcpy
+
+// m_Do_printf.o
+800091e0:OSReport
 
 // m_Do_ext.o
 // text
-8000EDA8:getArchiveHeapPtr
+80014a4c:getArchiveHeapPtr
 
 // d_stage
-800267B4:roomTresureInit
-80027DAC:setTresure
+8002af28:roomTresureInit
+8002c564:setTresure
 
 // data
-80452BF4:archiveHeap
+80521038:AssertHeap
+8052103c:DbPrintHeap
+80521040:gameHeap
+80521044:zeldaHeap
+80521048:commandHeap
+8052104c:archiveHeap
+80521050:j2dHeap
 
 // d_save.o
-80032B50:getRupeeMax
-800351EC:getSave
-80035220:putSave
+800374e0:getRupeeMax
+80039518:getSave
+80039548:putSave
 
 // d_event.o
-800428A8:defaultSkipStb
-80042B04:skipper
+800459e0:defaultSkipStb
+80045c30:skipper
 
 // f_op_scene_req.o
 // data
-804525D4:freezeActors
-80452CA0:isLoading
+80521194:freezeActors
+8053a928:isLoading
 
 // f_ap_game.o
-80018B14:fapGm_Execute
+8001e868:fapGm_Execute
 
 // f_op_actor_mng.o
-8001BC90:createItemForPresentDemo
-8001BD1C:createItemForTrBoxDemo
-8001C17C:createItemForBoss
-8001C21C:createItemForMidBoss
-8001C260:createItemForDirectGet
+800214dc:createItemForPresentDemo
+80021568:createItemForTrBoxDemo
+80021a34:createItemForBoss
+80021af4:createItemForMidBoss
+80021b40:createItemForDirectGet
 
 // d_map_path_dmap.o
-8003EF8C:getMapPlayerPos
+800426f0:getMapPlayerPos
 
 // d_item.o
-80098010:checkItemGet
+8009212c:checkItemGet
 
 // d_a_alink.h
-800B2928:setStickData
-800BB6C4:checkHeavyStateOn
-8011A908:checkTreasureRupeeReturn
-8011EC04:procGanonFinishInit
-8011EC84:procGanonFinish
+800a990c:setStickData
+800b2a90:checkHeavyStateOn
+8010e104:checkTreasureRupeeReturn
+801123bc:procGanonFinishInit
+80112440:procGanonFinish
 
 // data
-8039038C:ladderVars
+803d0d68:ladderVars
 
 // d_menu_collect.o
-801B3598:setWalletMaxNum
+80197928:setWalletMaxNum
 
 // JKRExpHeap.o
-802CFF28:do_alloc_JKRExpHeap
-802D05AC:do_free_JKRExpHeap
+802cddb8:do_alloc_JKRExpHeap
+802ce444:do_free_JKRExpHeap
 
 // OSCache.o
-// 8033C36C:DCEnable
-// 8033C380:DCInvalidateRange
-8033C3AC:DCFlushRange
-// 8033C3DC:DCStoreRange
-// 8033C40C:DCFlushRangeNoSync
-// 8033C438:DCStoreRangeNoSync
-// 8033C464:DCZeroRange
-8033C490:ICInvalidateRange
-// 8033C4C4:ICFlashInvalidate
-// 8033C4D4:ICEnable
-// 8033C4E8:__LCEnable
-// 8033C5B4:LCEnable
-// 8033C5EC:LCDisable
-// 8033C614:LCStoreBlocks
-// 8033C638:LCStoreData
-// 8033C6E4:LCQueueWait
-// 8033C6F8:L2GlobalInvalidate
-// 8033C790:DMAErrorHandler
-// 8033C8F0:__OSCacheInit
+// 80346148:DCEnable
+// 8034615c:DCInvalidateRange
+80330f88:DCFlushRange
+// 803461b8:DCStoreRange
+// 803461e8:DCFlushRangeNoSync
+// 80346214:DCStoreRangeNoSync
+// 80346240:DCZeroRange
+8033106c:ICInvalidateRange
+// 803462a0:ICFlashInvalidate
+// 803462b0:ICEnable
+// 803462c4:__LCEnable
+// 80346390:LCEnable
+// 803463c8:LCDisable
+// 803463f0:LCStoreBlocks
+// 80346414:LCStoreData
+// 803464b4:LCQueueWait
+// There is no L2GlobalInvalidate on Wii
+// 00000000:L2GlobalInvalidate
+// 803464c8:DMAErrorHandler
+// 80346610:__OSCacheInit
 
 // runtime.o
-80362F38:_savefpr_14
-80362F3C:_savefpr_15
-80362F40:_savefpr_16
-80362F44:_savefpr_17
-80362F48:_savefpr_18
-80362F4C:_savefpr_19
-80362F50:_savefpr_20
-80362F54:_savefpr_21
-80362F58:_savefpr_22
-80362F5C:_savefpr_23
-80362F60:_savefpr_24
-80362F64:_savefpr_25
-80362F68:_savefpr_26
-80362F6C:_savefpr_27
-80362F70:_savefpr_28
-80362F74:_savefpr_29
-80362F78:_savefpr_30
-80362F7C:_savefpr_31
-80362FD0:_savegpr_14
-80362FD4:_savegpr_15
-80362FD8:_savegpr_16
-80362FDC:_savegpr_17
-80362FE0:_savegpr_18
-80362FE4:_savegpr_19
-80362FE8:_savegpr_20
-80362FEC:_savegpr_21
-80362FF0:_savegpr_22
-80362FF4:_savegpr_23
-80362FF8:_savegpr_24
-80362FFC:_savegpr_25
-80363000:_savegpr_26
-80363004:_savegpr_27
-80363008:_savegpr_28
-8036300C:_savegpr_29
-80363010:_savegpr_30
-80363014:_savegpr_31
-8036328C:__umoddi3
+803a8fd8:_savefpr_14
+803a8fdc:_savefpr_15
+803a8fe0:_savefpr_16
+803a8fe4:_savefpr_17
+803a8fe8:_savefpr_18
+803a8fec:_savefpr_19
+803a8ff0:_savefpr_20
+803a8ff4:_savefpr_21
+803a8ff8:_savefpr_22
+803a8ffc:_savefpr_23
+803a9000:_savefpr_24
+803a9004:_savefpr_25
+803a9008:_savefpr_26
+803a900c:_savefpr_27
+803a9010:_savefpr_28
+803a9014:_savefpr_29
+803a9018:_savefpr_30
+803a901c:_savefpr_31
+803a9070:_savegpr_14
+803a9074:_savegpr_15
+803a9078:_savegpr_16
+803a907c:_savegpr_17
+803a9080:_savegpr_18
+803a9084:_savegpr_19
+803a9088:_savegpr_20
+803a908c:_savegpr_21
+803a9090:_savegpr_22
+803a9094:_savegpr_23
+803a9098:_savegpr_24
+803a909c:_savegpr_25
+803a90a0:_savegpr_26
+803a90a4:_savegpr_27
+803a90a8:_savegpr_28
+803a90ac:_savegpr_29
+803a90b0:_savegpr_30
+803a90b4:_savegpr_31
+803a932c:__umoddi3
 
 // mem.o
-80366EBC:memcmp
+803ab8f4:memcmp
 
 // printf.o
-8036730C:sprintf
-803673EC:snprintf
+803ae1a0:sprintf
+803ae0c8:snprintf
 
 // string.o
-803697C4:strcmp
-80369918:strncpy
-8036995C:strcpy
+803ae4e0:strcmp
+803ae470:strncpy
+803ae3b0:strcpy
 
 // m_Do_controller_pad.o
 // data
-803DF288:cpadInfo
+80433968:cpadInfo
+80433a68:m_pad
 
 // d_com_inf_game.o
 // data
-80408160:dComIfG_gameInfo
+8047a828:dComIfG_gameInfo
 
 // d_kankyo.o
 // data
-8042EA14:env_light
+804a136c:env_light
 
 // JFWSystem.o
 // data
-80453180:systemConsole
+80521678:systemConsole
 
-//d_item_data.o
-803ae280:item_resource
-803afa68:field_item_res
-803b0a58:item_info
+// JUTGamePad
+// data
+804a98c0:mPadButton
+804a9980:mPadMStick
+804a99c0:mPadSStick
+
+// c_counter
+// data
+804a5cf8:g_Counter

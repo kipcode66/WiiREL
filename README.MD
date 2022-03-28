@@ -12,13 +12,13 @@ REL
 │   │   │   ├───include/    // Library Header files
 │   │   │   ├───source/     // Library source files
 ├───assets/                 // Additional resources that are not code
-│   ├───banner.raw          // Game banner for the GCI
-|   ├───icon.raw            // Game icon for the GCI
+│   ├───banner.raw          // Game banner for the Savefile
 │   ├───*.lst          	    // Symbol:Address pairs for each version of the game
 ├───bin/                    // Binary files and scripts
-│   ├───elf2rel             // Linux Binary of elf2rel
+│   ├───elf2rel             // Linux Binary of elf2rel (outdated)
 │   ├───elf2rel.exe         // Windows "
 │   ├───gcipack.py          // Packs a REL into a GCI
+│   ├───nandpack.py         // Packs a REL into a Wii save file (.bin)
 ├───docs/                   // Doxygen Output folder; can be used for GitHub pages - change in doxygen.conf
 ├───include/                // Your Header (.h) files
 ├───source/                 // Your Source (.cpp) files
@@ -30,7 +30,7 @@ REL
 ## Getting started
 ---
 This repository provides you with a solid start, you should use the predefined main function as an entry point to your mod...
-Please check Lines 12 through 23 in the Makefile to change some of the definitions and names.
+Please check Lines 12 through 26 in the Makefile to change some of the definitions and names.
 
 You can refer to the [Randomizer](//github.com/zsrtp/Randomizer) Project for reference.
 
@@ -52,7 +52,7 @@ Open a CMD and navigate to where you want your code to be:
 ```
 C:\>mkdir Code
 C:\>cd Code
-C:\Code>git clone https://github.com/zsrtp/REL.git
+C:\Code>git clone https://github.com/kipcode66/REL.git
 Cloning into REL
 remote: Enumerating objects: 132, done.
 remote: Counting objects: 100% (132/132), done.
@@ -72,6 +72,7 @@ Done.
   * DevkitPPC comes with [devkitPro](//github.com/devkitPro/installer/releases)
   * [Python3](//www.python.org/downloads) (should be added to PATH or you will likely need Makefile adjustments)
   * Optional: [Visual Studio Code](//code.visualstudio.com) with [GC Settings](//wiki.zeldatp.net/Dev:Visual_Studio_Code)
+  * If on Linux, you will need Wine installed (to run bin/elf2rel.exe)
 
 **Compiling**
 
@@ -81,7 +82,7 @@ s own MSys2 shell, it is recommended to use it for compilation.
 This is an example of how to build for the NTSC-U version of the Game
 ```
 $ cd /c/Path/To/REL
-$ make us
+$ make us0
 main.cpp
 cxx.cpp
 memory.cpp
@@ -92,11 +93,11 @@ timer.cpp
 console.cpp
 restfpr_x.s
 restgpr_x.s
-linking ... Randomizer.us.elf
-output ... Randomizer.us.rel
-packing ... Randomizer.us.gci
+linking ... REL.us0.elf
+output ... REL.us0.rel
+packing ... REL.us0.bin
 ```
-The `Randomizer.us.gci` (other versions are: `jp` and `eu`) file is now containing our custom REL. Load it with the REL Loader cheat or a hacked save file that contains the loader, it can be found on the [rando](//rando.zeldatp.net) homepage.
+The `REL.us0.bin` (other versions are: `us2`, `jp`, and `eu`) file is now containing our custom REL. Load it with the REL Loader cheat or a hacked save file that contains the loader, it can be found on the [rando](//rando.zeldatp.net) homepage.
 
 ---
-This mod is powered by [libtp_rel](//github.com/zsrtp/libtp_rel) and licensed under [GPLv3](/LICENSE) | (C) [AECX](//github.com/AECX), [LunarSoap](//github.com/lunarsoap5), [Zephiles](//github.com/Zephiles)
+This mod is powered by [libtp_rel](//github.com/zsrtp/libtp_rel) and licensed under [GPLv3](/LICENSE) | (C) [AECX](//github.com/AECX), [LunarSoap](//github.com/lunarsoap5), [Zephiles](//github.com/Zephiles), [kipcode66](//github.com/kipcode66)

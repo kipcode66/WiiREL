@@ -12,8 +12,6 @@
 #include <display/console.h>
 #include <tp/f_ap_game.h>
 
-#include <cinttypes>
-
 namespace mod
 {
     /***********************************************************************************
@@ -28,19 +26,16 @@ namespace mod
      * assuming the REL got loaded in the first place.
      ***********************************************************************************/
     void main();
+    class Mod
+    {
+        public:
+            Mod();
+            void init();
 
-    /**
-     * @brief This function is called when there's a frame update
-     */
-    void procNewFrame();
-
-    // Console
-    libtp::display::Console c;
-
-    // Counter
-    uint32_t i;
-
-    // "trampoline/return" function to the original function that we hook in order to proc our NewFrame function
-    void (*return_fapGm_Execute)() = nullptr;
-
+        private:
+            int i;
+            libtp::display::Console c;
+            void procNewFrame();
+            void (*return_fapGm_Execute)() = nullptr;
+    };
 }  // namespace mod
