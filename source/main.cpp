@@ -26,6 +26,11 @@ namespace mod
         mod->init();
     }
 
+    // Create our console instance (it will automatically display some of the definitions from our Makefile like version,
+    // variant, project name etc.
+    // this console can be used in a similar way to cout to make printing a little easier; it also supports \n for new lines
+    // (\r is implicit; UNIX-Like) and \r for just resetting the column and has overloaded constructors for all of the
+    // primary cinttypes
     Mod::Mod() : c(0)
     {
         i = 0;
@@ -40,12 +45,6 @@ namespace mod
          * libtp::display::setConsole(true, 25);
          * libtp::display::print(1, "Hello World!");
          */
-
-        // Create our console instance (it will automatically display some of the definitions from our Makefile like version,
-        // variant, project name etc.
-        // this console can be used in a similar way to cout to make printing a little easier; it also supports \n for new lines
-        // (\r is implicit; UNIX-Like) and \r for just resetting the column and has overloaded constructors for all of the
-        // primary cinttypes
         c << "Hello world!\n\n";
 
         gMod = this;
