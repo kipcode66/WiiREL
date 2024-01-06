@@ -45,6 +45,7 @@
 80021968:createItemForBoss
 80021a28:createItemForMidBoss
 80021a74:createItemForDirectGet
+800335d4:dComIfGs_setSelectEquipClothes
 
 // d_map_path_dmap.o
 80042624:getMapPlayerPos
@@ -55,6 +56,7 @@
 // d_a_alink.h
 800a98d0:setStickData
 800b2a54:checkHeavyStateOn
+800cd944:setClothesChange
 8010e150:checkTreasureRupeeReturn
 80112420:procGanonFinishInit
 801124a4:procGanonFinish
@@ -150,6 +152,7 @@
 // d_com_inf_game.o
 // data
 80479f30:dComIfG_gameInfo
+809751a4:dComIfGs_isEventBit
 
 // d_kankyo.o
 // data
